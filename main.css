@@ -10,7 +10,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url(https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExN2RudHFiZm9ubDdqZHBldWw3bGM0emd4cDh5aXRtOG8wMGs4ZnNjYiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ZZqrrzzjpiKZOc6mDC/giphy.gif);
+    background-image: url(https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExeHJmZ2s1eHRtZGZ4dXJzeXRmNDB2enc4NTc3bnV0NWxiM2R1N3NjZCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JQ6G9GuFuAf7j1v1fR/giphy.gif);
     background-size: cover;
     background-position: center;
 }
@@ -75,7 +75,7 @@ body {
     cursor: crosshair;
 }
 
-.container__hidden__tex {
+.container__hidden__text {
     color: white;
     font-size: 24px;
     text-align: center;
