@@ -1,21 +1,325 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blas</title>
-    <link rel="stylesheet" href="main.css">
-    <link href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap" rel="stylesheet">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>¡Regalazo BattleBros!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gif: url('https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZXZraGhzaHgza3lnNTMxcGllZGFhNHgwYTBwdGVraXBydjd5NjBkZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/hniyfuUZNGZF3HlTYu/giphy.gif');
+            /* Cambia esta URL por el GIF que quieras */
+            --accent: #00e0ff;
+            --accent-2: #ffb700;
+            --bg-overlay: rgba(7, 10, 14, 0.6);
+            --card-bg: rgba(0, 0, 0, 0.55);
+            --text: #eaf6ff;
+            --muted: #a9c1d1;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        @font-face {
+            font-family: 'BattlefieldFont';
+            src: url('battlefield.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            font-family: 'BattlefieldFont', sans-serif;
+            color: var(--text);
+            background-image: var(--bg-gif);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0, 0, 0, .45), var(--bg-overlay));
+        }
+
+        .page {
+            position: relative;
+            min-height: 100%;
+            display: grid;
+            place-items: center;
+            padding: 24px;
+        }
+
+        .card {
+            width: min(860px, 95vw);
+            backdrop-filter: blur(3px) saturate(120%);
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, .08);
+            border-radius: 22px;
+            padding: clamp(18px, 3vw, 28px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
+        }
+
+        .title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-size: clamp(28px, 4.2vw, 44px);
+            line-height: 1.1;
+            margin: 0 0 8px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, .6);
+        }
+
+        .badge {
+            font-size: .6em;
+            padding: 4px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, .2);
+            color: var(--accent);
+            background: rgba(0, 224, 255, .12);
+        }
+
+        .subtitle {
+            margin: 0 0 18px;
+            color: var(--muted);
+            font-size: clamp(14px, 1.8vw, 16px);
+        }
+
+        .joke {
+            font-size: clamp(16px, 2.1vw, 18px);
+            line-height: 1.6;
+            margin: 14px 0 22px;
+        }
+
+        .quote {
+            border-left: 3px solid var(--accent);
+            padding-left: 12px;
+            margin: 18px 0;
+            color: #d7f5ff;
+        }
+
+        .key-wrap {
+            display: grid;
+            gap: 10px;
+            grid-template-columns: 1fr auto;
+            align-items: center;
+            background: rgba(255, 255, 255, .05);
+            border: 1px solid rgba(255, 255, 255, .12);
+            border-radius: 16px;
+            padding: 14px;
+            margin-top: 10px;
+        }
+
+        .key-label {
+            font-size: 12px;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .key {
+            font-variant-numeric: tabular-nums;
+            letter-spacing: .08em;
+            font-weight: 700;
+            font-size: clamp(18px, 3vw, 22px);
+            filter: blur(6px);
+            transition: filter .25s ease, text-shadow .25s ease;
+            user-select: none;
+        }
+
+        .key.revealed {
+            filter: blur(0);
+            text-shadow: 0 0 14px rgba(255, 183, 0, .4);
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        button {
+            appearance: none;
+            border: 0;
+            cursor: pointer;
+            border-radius: 12px;
+            padding: 10px 14px;
+            font-weight: 600;
+            font-size: 14px;
+            background: #0e1a22;
+            color: var(--text);
+            border: 1px solid rgba(255, 255, 255, .1);
+            transition: transform .06s ease, box-shadow .2s ease, background .2s ease;
+        }
+
+        button:hover {
+            box-shadow: 0 6px 18px rgba(0, 0, 0, .35);
+            background: #10232c;
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .primary {
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            color: #0b0f12;
+            border: none;
+        }
+
+        .footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 18px;
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .pill {
+            padding: 6px 10px;
+            border: 1px dashed rgba(255, 255, 255, .25);
+            border-radius: 999px;
+        }
+
+        .hint {
+            opacity: .9;
+        }
+
+        .logo {
+            width: 38px;
+            height: 38px;
+            border-radius: 9px;
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            color: #0b0f12;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            box-shadow: 0 6px 18px rgba(0, 0, 0, .35);
+        }
+
+        .grid {
+            display: grid;
+            gap: 16px;
+        }
+
+        @media (min-width: 700px) {
+            .grid {
+                grid-template-columns: 1fr 1fr;
+                align-items: start;
+            }
+        }
+
+        .small {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        a {
+            color: var(--accent);
+            text-underline-offset: 3px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            gap: 14px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-link {
+            display: inline-block;
+            text-decoration: none;
+            color: #0b0f12;
+            background: linear-gradient(135deg, #00e0ff, #ffb700);
+            padding: 12px 24px;
+            font-weight: bold;
+            border-radius: 12px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            font-size: 1rem;
+        }
+
+        .btn-link:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+
 <body>
-    <div class="main">
-        <div class="main__glass">
-            <div class="davin">
-                <p class="main__text">Uh uh uh ah ah ah</p>
-                <div class="davin__gif"></div>
+    <div class="overlay" aria-hidden="true"></div>
+    <main class="page">
+        <section class="card" role="region" aria-labelledby="t1">
+            <header class="title" id="t1">
+                <span>Operación: Pre Order</span>
+            </header>
+            <p class="subtitle">De parte de Padel Meister ft. Colibrix</p>
+
+            <div>
+                <h1>Habia que mantenerse fuerte...</h1>
+                <h3>Pero como, tanto tu como nosotros sabemos que no vamos a poder resistirnos, te ponemos los
+                    dientes largos.</h3>
+                <p>Para la espera te dejamos un par de alternativas "a cada cual MEJOR" para que elijas con cual
+                    prefieres gastar tu tiempo.</p>
+                <ul>
+                    <li><a href="https://www.playrematch.com/" target="_blank" rel="noopener noreferrer"
+                            class="btn-link">Opcion
+                            1</a></li>
+                    <li><a href="https://www.ea.com/es/games/battlefield/battlefield-2042/features" target="_blank"
+                            rel="noopener noreferrer" class="btn-link">Opcion 2</a></li>
+                </ul>
             </div>
-            <!--<p class="main__text"><span class="davin">Davin<div class="davin__gif"></div></span> quita del teclado coño. Esperemos que hagas el mono tanto como el simio del discord</p>-->
-                <p class="main__text">Davin quita del teclado coño. Esperemos que hagas el mono tanto como el simio del discord</p>
-            <p class="main__text_key"></p>
-        </div>
-    </div>
+        </section>
+    </main>
+
+    <script>
+        const gifUrl = 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExZXZraGhzaHgza3lnNTMxcGllZGFhNHgwYTBwdGVraXBydjd5NjBkZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/hniyfuUZNGZF3HlTYu/giphy.gif';
+
+        // Aplica el GIF de fondo y la key
+        document.documentElement.style.setProperty('--bg-gif', `url('${gifUrl}')`);
+
+        // Pequeño easter egg con la tecla B
+        function lanzarBengala() {
+            const flare = document.createElement('div');
+            flare.className = 'flare';
+            flare.style.left = Math.random() * (window.innerWidth - 18) + 'px';
+            flare.style.top = Math.random() * (window.innerHeight - 18) + 'px';
+            document.body.appendChild(flare);
+            requestAnimationFrame(() => {
+                flare.style.opacity = '1';
+                flare.style.transform = 'translateY(-12px) scale(1.2)';
+            });
+            //setTimeout(() => flare.remove(), 900);
+        }
+
+
+        // Genera bengalas en loop cada 700ms
+        setInterval(lanzarBengala, 700);
+    </script>
+
+    <!--
+  =====================
+  Instrucciones rápidas
+  =====================
+  1) Cambia el GIF de fondo: edita la variable gifUrl de arriba y pega cualquier enlace .gif (Giphy, Tenor, etc.).
+  2) Pega la key del juego: sustituye el valor de gameKey por tu clave real (formato XXXXX-XXXXX-XXXXX-XXXXX-XXXXX o el que tengas).
+  3) Sube este archivo a cualquier hosting o mándalo por chat. Al abrirlo, verás la página con el GIF, el texto y la clave.
+  4) Privacidad exprés: por defecto la key sale borrosa hasta que le des a “Revelar”. También hay botón “Copiar”.
+  5) Extra: pulsa la tecla B para una bengala de celebración (visual).
+  -->
 </body>
+
+</html>
